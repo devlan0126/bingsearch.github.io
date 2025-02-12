@@ -1,118 +1,162 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>自动Bing搜索</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bing自动搜索</title>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-        padding: 20px;
-      }
-      #status {
-        margin-top: 20px;
-        font-size: 1.2em;
-      }
-      #searchFrame {
-        width: 100%;
-        height: 600px;
-        border: 1px solid #ccc;
-        margin-top: 20px;
-      }
-      #startButton {
-        padding: 10px 20px;
-        font-size: 1em;
-        cursor: pointer;
-        margin-top: 20px;
-      }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        input {
+            margin-top: 5px;
+            padding: 10px;
+            width: 100%;
+            max-width: 300px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #status {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 20px;
+            }
+            label {
+                font-size: 14px;
+            }
+            input {
+                font-size: 14px;
+                padding: 8px;
+            }
+            button {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+            #status {
+                font-size: 14px;
+            }
+        }
     </style>
-  </head>
-  <body>
-    <h1>自动Bing搜索</h1>
+</head>
+<body>
+    <h1>Bing自动搜索</h1>
+    <label for="searchLimit">搜索次数限制（默认5次）：</label>
+    <input type="number" id="searchLimit" min="1" value="5">
     <button id="startButton">开始搜索</button>
-    <div id="status">点击“开始搜索”按钮以启动搜索。</div>
-    <iframe id="searchFrame" src="about:blank"></iframe>
+    <div id="status"></div>
 
     <script>
-      // 关键词搜索库
-      const keywords = [
-        "人工智能",
-        "机器学习",
-        "深度学习",
-        "自然语言处理",
-        "计算机视觉",
-        "大数据",
-        "云计算",
-        "区块链",
-        "物联网",
-        "5G网络",
-        "自动驾驶",
-        "量子计算",
-      ];
+        // 关键词库
+        const keywords = [
+            "人工智能",
+            "机器学习",
+            "深度学习",
+            "自然语言处理",
+            "计算机视觉",
+            "数据分析",
+            "大数据",
+            "云计算",
+            "物联网",
+            "区块链"
+        ];
 
-      // 记录已查询的关键词
-      let usedKeywords = [];
+        // 搜索次数限制
+        let maxSearches = 5;
+        let searchCount = 0;
 
-      // 搜索次数限制
-      const maxSearchCount = 5; // 默认搜索5次
-      let searchCount = 0;
+        // 已使用的关键词索引
+        let usedIndices = [];
 
-      // 随机抽取一个未使用过的关键词
-      function getRandomKeyword() {
-        if (usedKeywords.length === keywords.length) {
-          alert("所有关键词已查询完毕！");
-          return null;
-        }
+        // 开始搜索按钮和输入框
+        const startButton = document.getElementById('startButton');
+        const searchLimitInput = document.getElementById('searchLimit');
+        const statusDiv = document.getElementById('status');
 
-        let keyword;
-        do {
-          keyword = keywords[Math.floor(Math.random() * keywords.length)];
-        } while (usedKeywords.includes(keyword));
+        startButton.addEventListener('click', () => {
+            // 获取用户输入的搜索次数限制
+            const userInput = parseInt(searchLimitInput.value, 10);
 
-        usedKeywords.push(keyword);
-        return keyword;
-      }
+            // 验证输入是否为正整数
+            if (isNaN(userInput) || userInput <= 0) {
+                statusDiv.textContent = '请输入有效的正整数作为搜索次数限制！';
+                return;
+            }
 
-      // 执行Bing搜索
-      function performSearch() {
-        if (searchCount >= maxSearchCount) {
-          document.getElementById("status").textContent =
-            "搜索已完成，共搜索了 " + maxSearchCount + " 次。";
-          return;
-        }
+            // 设置搜索次数限制
+            maxSearches = userInput;
+            searchCount = 0;
+            usedIndices = [];
 
-        const keyword = getRandomKeyword();
-        if (!keyword) return;
+            // 禁用按钮和输入框
+            startButton.disabled = true;
+            searchLimitInput.disabled = true;
 
-        const searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(
-          keyword
-        )}`;
-        document.getElementById("searchFrame").src = searchUrl;
-
-        searchCount++;
-        document.getElementById(
-          "status"
-        ).textContent = `正在搜索: ${keyword} (第 ${searchCount} 次，共 ${maxSearchCount} 次)`;
-
-        // 设置下一次搜索的间隔时间（8到10秒）
-        const interval = Math.floor(Math.random() * 2000) + 8000; // 8到10秒
-        setTimeout(performSearch, interval);
-      }
-
-      // 绑定按钮点击事件
-      document
-        .getElementById("startButton")
-        .addEventListener("click", function () {
-          // 重置状态
-          usedKeywords = [];
-          searchCount = 0;
-          document.getElementById("status").textContent = "搜索已启动...";
-          document.getElementById("searchFrame").src = "about:blank";
-
-          // 开始搜索
-          performSearch();
+            statusDiv.textContent = '搜索开始...';
+            performSearch();
         });
+
+        function performSearch() {
+            if (searchCount >= maxSearches) {
+                statusDiv.textContent = '搜索完成，已达到最大搜索次数。';
+                startButton.disabled = false;
+                searchLimitInput.disabled = false;
+                return;
+            }
+
+            // 随机选择一个未使用的关键词
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * keywords.length);
+            } while (usedIndices.includes(randomIndex));
+
+            usedIndices.push(randomIndex);
+            const keyword = keywords[randomIndex];
+
+            // 打开Bing搜索
+            window.open(`https://www.bing.com/search?q=${encodeURIComponent(keyword)}`, '_blank');
+
+            // 更新状态
+            searchCount++;
+            statusDiv.textContent = `正在搜索第 ${searchCount} 次，关键词：${keyword}`;
+
+            // 设置下一次搜索的间隔时间
+            const interval = Math.floor(Math.random() * 2000) + 8000; // 8到10秒
+            setTimeout(performSearch, interval);
+        }
     </script>
-  </body>
+</body>
 </html>
