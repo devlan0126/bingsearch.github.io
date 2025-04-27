@@ -1429,7 +1429,15 @@
             // 修改点击事件处理逻辑
             li.addEventListener("click", () => {
               const customInput = document.getElementById("customQuestion");
-              customInput.value = question;
+              const prefixes = [
+                `${new Date().getFullYear()}年 `,
+                "请问 ",
+                "知不知道 ",
+                "",
+              ];
+              const randomPrefix =
+                prefixes[Math.floor(Math.random() * prefixes.length)];
+              customInput.value = randomPrefix +  question;
             });
 
             ul.appendChild(li);
