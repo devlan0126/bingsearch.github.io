@@ -204,7 +204,7 @@ function initLastSearchTime() {
 if ('serviceWorker' in navigator) {
     console.log('### ServiceWorker支持 ###'); // Debug informati
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js')
+        navigator.serviceWorker.register('./sw.js')
             .then(registration => {
                 console.log('ServiceWorker注册成功:', registration.scope);
             })
