@@ -1,11 +1,10 @@
 {
-  "name": "Bing搜索助手",
-  "short_name": "Bing搜索",
-  "start_url": ".",
+  "name": "Bing Auto Search",
+  "short_name": "BingSearch",
+  "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#0067b8",
   "theme_color": "#0067b8",
-  "description": "智能Bing搜索助手PWA应用",
   "icons": [
     {
       "src": "icons/icon-192x192.png",
