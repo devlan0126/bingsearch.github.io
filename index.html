@@ -108,9 +108,9 @@
           />
         </div>
         <button onclick="handleSearch()">立即搜索</button>
-        <div class="counter" id="counter">今日剩余问题：50/50</div>
         <!-- 添加搜索日志展示区域 -->
         <div class="search-log" id="searchLog">上一次搜索时间：无</div>
+        <div class="search-count" id="searchCount">今日搜索次数：0</div>
       </div>
     </div>
 
@@ -154,11 +154,12 @@
           // 从总库随机抽取50个问题（去重）
           const pool = [...new Set(QUESTION_LIBRARY)];
           const list = shuffleArray(pool);
-          data.dailyQuestions = list.slice(0, 50); // 取前50个问题
+          data.dailyQuestions = list.slice(0, 10); // 取前50个问题
           data.searched = [];
           data.shown = [];
           data.date = today;
           localStorage.setItem("searchData", JSON.stringify(data));
+          localStorage.setItem("searchHistory", JSON.stringify([]));
         } else {
           // 当日加载，需要剔除已搜索问题
           const pool = [
@@ -167,7 +168,7 @@
             ),
           ];
           const list = shuffleArray(pool);
-          const cl = list.slice(0, 50);
+          const cl = list.slice(0, 10);
           const dailyQuestions = data.dailyQuestions.concat(cl);
           localStorage.setItem(
             "searchData",
@@ -185,17 +186,12 @@
 
       // 渲染问题列表
       function renderQuestions() {
-        const data = initStorage();
+        const { dailyQuestions } = initStorage();
         const ul = document.getElementById("questionList");
         ul.innerHTML = "";
         ul.style.counterReset = "item";
 
-        // 过滤已展示问题
-        const availableQuestions = data.dailyQuestions
-          .filter((q) => !data.shown.includes(q) && !data.searched.includes(q))
-          .slice(0, 10); // 只展示10个未展示的问题
-
-        availableQuestions.forEach((question, index) => {
+        dailyQuestions.forEach((question, index) => {
           const li = document.createElement("li");
           li.textContent = question;
           li.style.cursor = "pointer";
@@ -227,12 +223,6 @@
 
           ul.appendChild(li);
         });
-
-        // 更新计数器
-        const remaining = data.dailyQuestions.length - data.searched.length;
-        document.getElementById(
-          "counter"
-        ).textContent = `今日剩余问题：${remaining}/50`;
       }
 
       // 搜索处理
@@ -261,7 +251,24 @@
 
         // 记录搜索
         data.searched.push(question);
+
+        // 新增：记录搜索历史
+        const searchHistory = JSON.parse(
+          localStorage.getItem("searchHistory") || "[]"
+        );
+        searchHistory.push({
+          question,
+          time: new Date().toISOString(),
+        });
+        localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+
         localStorage.setItem("searchData", JSON.stringify(data));
+
+        // 更新今日搜索次数
+        const todayCount = searchHistory.length;
+        document.getElementById(
+          "searchCount"
+        ).textContent = `今日搜索次数：${todayCount}`;
 
         // 记录搜索时间
         const searchTime = new Date().toLocaleString();
@@ -296,11 +303,18 @@
       // 初始化时尝试显示上次搜索时间
       function initLastSearchTime() {
         const lastSearchTime = localStorage.getItem("lastSearchTime");
+        const searchHistory = JSON.parse(
+          localStorage.getItem("searchHistory") || "[]"
+        );
         if (lastSearchTime) {
           document.getElementById(
             "searchLog"
           ).textContent = `上一次搜索时间：${lastSearchTime}`;
         }
+        const data = initStorage();
+        document.getElementById(
+          "searchCount"
+        ).textContent = `今日搜索次数：${searchHistory.length}`;
       }
 
       // 注册Service Worker
