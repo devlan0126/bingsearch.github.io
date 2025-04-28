@@ -1,7 +1,7 @@
 {
   "name": "Bing Auto Search",
   "short_name": "BingSearch",
-  "start_url": "/bingsearch.github.io/index.html",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#0067b8",
   "theme_color": "#0067b8",

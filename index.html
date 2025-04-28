@@ -7,7 +7,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
-    <link rel="manifest" href="./manifest.json" />
+    <link rel="manifest" href="" id="manifestLink">
+    <script>
+      // 动态设置manifest文件
+      const manifestLink = document.getElementById('manifestLink');
+      manifestLink.href = window.location.href.includes('github.io') 
+        ? './manifest.json' 
+        : './manifest-local.json';
+    </script>
     <link rel="stylesheet" href="./css/styles.css">
     <title>Bing Auto Search</title>
     <link rel="icon" href="icons/icon-192x192.png" type="image/png">
