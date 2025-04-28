@@ -1,0 +1,21 @@
+{
+  "name": "Bing搜索助手",
+  "short_name": "Bing搜索",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0067b8",
+  "description": "智能Bing搜索助手PWA应用",
+  "icons": [
+    {
+      "src": "icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
