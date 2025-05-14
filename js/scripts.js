@@ -68,6 +68,7 @@ function initStorage() {
 }
 
 // 渲染问题列表
+// 渲染问题列表
 function renderQuestions() {
     const { dailyQuestions } = initStorage();
     const ul = document.getElementById("questionList");
@@ -83,9 +84,7 @@ function renderQuestions() {
         li.addEventListener("click", () => {
             const customInput = document.getElementById("customQuestion");
             const prefixes = [
-                `${new Date().getFullYear()}年 `,
                 "请问 ",
-                "知不知道 ",
                 "",
                 "帮我查一下 ",
                 "我想了解 ",
@@ -98,10 +97,14 @@ function renderQuestions() {
             customInput.value = randomPrefix + question;
 
             // 标记为已展示
+            const data = initStorage();
             if (!data.shown.includes(question)) {
                 data.shown.push(question);
                 localStorage.setItem("searchData", JSON.stringify(data));
             }
+
+            // 直接调用搜索处理函数
+            handleSearch();
         });
 
         ul.appendChild(li);
