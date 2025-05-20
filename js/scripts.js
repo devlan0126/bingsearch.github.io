@@ -68,7 +68,6 @@ function initStorage() {
 }
 
 // 渲染问题列表
-// 渲染问题列表
 function renderQuestions() {
     const { dailyQuestions } = initStorage();
     const ul = document.getElementById("questionList");
