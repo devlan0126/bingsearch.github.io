@@ -2,7 +2,7 @@ import json
 import random
 
 # 定义文件路径
-file_path = r'd:\develop\code\bingsearch.github.io\questions.json'
+file_path = r'd:\develop\code\bingsearch.github.io\questions2.json'
 
 # 读取文件内容
 with open(file_path, 'r', encoding='utf-8') as file:

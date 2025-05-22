@@ -2,7 +2,9 @@ let QUESTION_LIBRARY = [];
 
 async function loadQuestions() {
     try {
-        const response = await fetch("questions.json");
+        const questionFiles = ["questions.json", "questions2.json","questions3.json"];
+        const randomFile = questionFiles[Math.floor(Math.random() * questionFiles.length)]; 
+        const response = await fetch(randomFile);
         QUESTION_LIBRARY = await response.json();
         // 初始化存储系统
         // initStorage();
