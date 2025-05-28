@@ -1,0 +1,131 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+:root {
+  --primary-color: #0067b8;
+  --bg-color: #f5f5f5;
+}
+
+body {
+  font-family: -apple-system, system-ui, sans-serif;
+  margin: 0;
+  padding: 1rem;
+  /* 修改背景为渐变 */
+  background: linear-gradient(45deg, #e6f7ff, #0067b8);
+}
+
+.container {
+  background: white;
+  max-width: 600px;
+  margin: 1rem auto;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 0 0 1.5rem;
+}
+
+.search-box {
+  display: grid;
+  gap: 1rem;
+}
+
+select,
+input,
+button {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+button {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.counter {
+  text-align: center;
+  color: #666;
+  margin-top: 1rem;
+}
+
+#questionList {
+  border: 2px solid #ddd;
+  /* 添加边框 */
+  border-radius: 8px;
+  /* 边框圆角 */
+  margin: 0;
+}
+
+#questionList li::before {
+  content: counter(item) ". ";
+  counter-increment: item;
+}
+
+#questionList {
+  list-style-type: none;
+  padding: 0px;
+  height: 320px;
+  overflow-y: auto;
+  counter-reset: item 0;
+}
+
+/* 添加 li 的 hover 样式 */
+#questionList li {
+  cursor: pointer;
+  padding: 8px;
+}
+
+#questionList li:hover {
+  background-color: #e6f7ff;
+  /* 鼠标悬停时的背景颜色 */
+  color: var(--primary-color);
+  /* 鼠标悬停时的文字颜色 */
+}
