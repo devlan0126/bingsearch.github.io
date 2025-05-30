@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 
-const COOLDOWN_TIME = 20; // 冷却时间（秒）
+const COOLDOWN_TIME = 10; // 冷却时间（秒）
 
 const App = () => {
   const [questionLibrary, setQuestionLibrary] = useState([]);
