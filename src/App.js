@@ -126,6 +126,14 @@ const App = () => {
         <div
           className={`current-question ${!canClick ? 'disabled' : ''}`}
           onClick={() => handleQuestionClick(currentQuestion)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleQuestionClick(currentQuestion);
+            }
+          }}
         >
           {currentQuestion}
         </div>
@@ -136,7 +144,7 @@ const App = () => {
         )}
       </div>
       <div className="search-log">
-        上一次搜索时间：<strong>{searchHistory.length > 0 ? lastSearchTime.toLocaleString() : '无'}</strong>
+        上一次搜索时间：<strong>{searchHistory.length > 0 ? lastSearchTime?.toLocaleString() : '无'}</strong>
       </div>
       <div className="search-count">
         今日搜索次数：<strong>{searchHistory.length}</strong>
