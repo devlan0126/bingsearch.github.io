@@ -58,7 +58,7 @@ const App = () => {
 
   const loadQuestions = async () => {
     try {
-      const questionFiles = ["questions.json", "questions2.json", "questions3.json", "questions4.json", "questions5.json"];
+      const questionFiles = ["questions.json", "questions2.json", "questions3.json", "questions4.json", "questions5.json", "questions6.json"];
       const randomFile = questionFiles[Math.floor(Math.random() * questionFiles.length)];
       console.log('正在加载问题库:', randomFile);
       const response = await fetch(randomFile);
